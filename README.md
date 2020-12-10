@@ -8,7 +8,7 @@ This code loads the required libraries from Content Delivery Networks, so you ne
 1. git clone this repository: `git clone https://github.com/sarahdahippo/live-recognition.git`
 2. `cd` to the `live-recognition` directory
 3. run `python -m http.server`
-4. navigate to `http://localhost:8000/` in your web browser
+4. navigate to http://localhost:8000/ in your web browser
 5. allow webcam access when prompted
 6. there might be some delay time before the model starts detecting objects
 
@@ -17,6 +17,3 @@ Tensorflow.js is a library for developing Machine Learning models in JavaScript,
 
 ### What is COCO-SSD?
 COCO-SSD (Common Objects in Context-Single Shot Detector) is an object detection model that detects and localizes one or more objects in a picture. (https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd) COCO encompasses all the data (images) that trained the model. Currently, there are 90 different classes (https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts).
-
-lite_mobilenet_v2: extractor based on MobileNet's architecture
-Convolutional Neural Network
