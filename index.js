@@ -3,13 +3,6 @@ class App extends React.Component {
     cam = React.createRef();
     canvas = React.createRef();
 
-    // inline style
-    styles = {
-        position: 'fixed',
-        top: 150,
-        left: 150,
-    };
-
     componentDidMount() {
         // request permission to use webcam
         if (navigator.mediaDevices.webkitGetUserMedia
@@ -58,7 +51,6 @@ class App extends React.Component {
         var context = this.canvas.current.getContext("2d");
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.font = "24px Georgia";
-        // context.textBaseline = "top";
 
         // iterate through each possible detection
         /* example schema of detections == [
@@ -74,15 +66,20 @@ class App extends React.Component {
             var width = detection.bbox[2];
             var height = detection.bbox[3];
 
+            var score = (detection.score * 100).toFixed(5); // percent, 5dp
+            var accuracyColor = "#00E000";
+            if (score < 90) accuracyColor = "#FFD700";
+            else if (score < 80) accuracyColor = "#FFD700";
+            else if (score < 65) accuracyColor = "#FF0000";
+
             // display box around object
-            context.strokeStyle = "#00E000";
+            context.strokeStyle = accuracyColor;
             context.lineWidth = 5;
             context.strokeRect(x, y, width, height);
 
             // display label
-            var score = (detection.score * 100).toFixed(5); // percent, 5dp
             var label = `${detection.class}: ${score}%`;
-            context.fillStyle = "#00E000"; // label's background
+            context.fillStyle = accuracyColor; // label's background
             var labelLength = context.measureText(label).width;
             context.fillRect(x, y - 25, labelLength, 25);
             context.fillStyle = "#000000"; // label's text
@@ -93,13 +90,16 @@ class App extends React.Component {
     render() {
         return(
             <div>
-                <video style={this.styles} ref={this.cam}
-                    autoPlay width="720" height="600"/>
-                <canvas style={this.styles} ref={this.canvas}
-                    width="720" height="600"/>
+                <video className="video" ref={this.cam} 
+                    autoPlay muted width="640px" height="480px"/>
+                <canvas className="canvas" ref={this.canvas}
+                     width="640px" height="480px"/>
             </div>
         );
     }
 }
 
-ReactDOM.render(React.createElement(App), document.querySelector("#main"));
+ReactDOM.render(
+    React.createElement(App),
+    document.querySelector("#main")
+);
