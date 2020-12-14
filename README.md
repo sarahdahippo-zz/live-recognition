@@ -17,3 +17,6 @@ Tensorflow.js is a library for developing Machine Learning models in JavaScript,
 
 ### What is COCO-SSD?
 COCO-SSD (Common Objects in Context-Single Shot Detector) is an object detection model that detects and localizes one or more objects in a picture. (https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd) COCO encompasses all the data (images) that trained the model. Currently, there are 80 different classes (https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts) that the model can detect.
+
+### What's next?
+Train my own custom object detector.
