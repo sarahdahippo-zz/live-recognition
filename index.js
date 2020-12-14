@@ -2,6 +2,24 @@ class App extends React.Component {
     // create references for webcam feed and canvas
     cam = React.createRef();
     canvas = React.createRef();
+    
+    state = {
+        // 80 detectable classes, but 90 total
+        // 0: background; 12,26,29,30,45,66,68,69,71,83: unknown
+        classes: ["person", "bicycle", "car", "motorcycle", "airplane",
+            "bus", "train", "truck", "boat", "traffic light", "fire hydrant",
+            "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse",
+            "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack",
+            "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+            "sports ball", "kite", "baseball bat", "baseball glove", "skateboard",
+            "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife",
+            "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog",
+            "pizza", "donut", "cake", "chair", "couch", "potted plant", "bed", "dining table",
+            "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone",
+            "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock",
+            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"
+        ]
+    }
 
     componentDidMount() {
         // request permission to use webcam
@@ -48,6 +66,10 @@ class App extends React.Component {
     };
 
     detectObjects = (detections) => {
+        var canvas = document.getElementsByTagName('canvas')[0];
+        canvas.width  = 640;
+        canvas.height = 480; // same as video
+        
         var context = this.canvas.current.getContext("2d");
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.font = "24px Georgia";
@@ -68,9 +90,9 @@ class App extends React.Component {
 
             var score = (detection.score * 100).toFixed(5); // percent, 5dp
             var accuracyColor = "#00E000";
-            if (score < 90) accuracyColor = "#FFD700";
-            else if (score < 80) accuracyColor = "#FFD700";
-            else if (score < 65) accuracyColor = "#FF0000";
+            if (score < 85) accuracyColor = "#FFD700";
+            else if (score < 75) accuracyColor = "#FFD700";
+            else if (score < 60) accuracyColor = "#FF0000";
 
             // display box around object
             context.strokeStyle = accuracyColor;
@@ -88,12 +110,34 @@ class App extends React.Component {
     };
 
     render() {
+        const {classes} = this.state;
+        const elements = [];
+        for (let [i, elem] of classes.entries()) {
+            elements.push(
+                <tr>
+                    <td>{i+1}</td>
+                    <td>{elem}</td>
+                </tr>
+            );
+        }
+
         return(
-            <div>
-                <video className="video" ref={this.cam} 
-                    autoPlay muted width="640px" height="480px"/>
-                <canvas className="canvas" ref={this.canvas}
-                     width="640px" height="480px"/>
+            <div className="root">
+                <div className="classes">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Detectable Classes</th>
+                        </tr>
+                        {elements}
+                    </table>
+                </div>
+                <div className="vidFrame">
+                    <video className="video" ref={this.cam} 
+                        autoPlay muted/>
+                    <canvas className="canvas" ref={this.canvas}
+                        />
+                </div>
             </div>
         );
     }
