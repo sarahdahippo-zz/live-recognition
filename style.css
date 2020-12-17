@@ -29,6 +29,11 @@ th:nth-child(1), td:nth-child(1) { /* first col of table */
     width: 30%;
 }
 
+.loading {
+    font-size: 3vw;
+    color: lightskyblue;
+}
+
 .vidFrame {
     width: 640px; /* same as video */
     margin-left: 10%;

@@ -18,7 +18,8 @@ class App extends React.Component {
             "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone",
             "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock",
             "vase", "scissors", "teddy bear", "hair drier", "toothbrush"
-        ]
+        ],
+        isVideo: false
     }
 
     componentDidMount() {
@@ -32,6 +33,7 @@ class App extends React.Component {
                 // stream is passed to the cam reference
                 window.stream = stream;
                 this.cam.current.srcObject = stream;
+                this.setState({ isVideo: true });
 
                 return new Promise(resolve => {
                     this.cam.current.onloadedmetadata = () => resolve();
@@ -42,6 +44,7 @@ class App extends React.Component {
         }
         
         var loadModel = cocoSsd.load(); // load COCO-SSD model
+        console.log(this.state.isVideo);
         Promise.all([loadModel, allowWebcam])
         // call getWebcam and pass in current video frame and model
         .then(data => this.getWebcam(this.cam.current, data[0]))
@@ -110,7 +113,7 @@ class App extends React.Component {
     };
 
     render() {
-        const {classes} = this.state;
+        const {classes, isVideo} = this.state;
         const elements = [];
         for (let [i, elem] of classes.entries()) {
             elements.push(
@@ -133,6 +136,7 @@ class App extends React.Component {
                     </table>
                 </div>
                 <div className="vidFrame">
+                    {!isVideo && <p className="loading">Loading...</p>}
                     <video className="video" ref={this.cam} 
                         autoPlay muted/>
                     <canvas className="canvas" ref={this.canvas}
