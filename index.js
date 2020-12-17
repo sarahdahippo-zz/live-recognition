@@ -44,7 +44,6 @@ class App extends React.Component {
         }
         
         var loadModel = cocoSsd.load(); // load COCO-SSD model
-        console.log(this.state.isVideo);
         Promise.all([loadModel, allowWebcam])
         // call getWebcam and pass in current video frame and model
         .then(data => this.getWebcam(this.cam.current, data[0]))
